@@ -1,340 +1,190 @@
+</body>
+</html>
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulir Input Data</title>
-    <!-- Tailwind CSS CDN untuk styling yang responsif -->
+    <title>Input Data Merchant</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f0f4f8;
+            background-color: #f3f4f6;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            touch-action: manipulation;
+        }
+        .container {
+            max-width: 420px;
+        }
+        .button-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .modal {
+            background-color: rgba(0, 0, 0, 0.4);
         }
     </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
-    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm">
-        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Input Data Merchant</h1>
-        <form id="dataForm" class="space-y-6">
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="container mx-auto p-4 md:p-6 bg-white rounded-xl shadow-lg m-4">
+        <div class="flex flex-col items-center mb-6">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2 text-center">Formulir Input Data</h1>
+            <p class="text-gray-500 text-center text-sm md:text-base">Masukkan informasi dengan teliti.</p>
+        </div>
+        
+        <form id="dataForm" class="space-y-4">
             <div>
-                <label for="nama" class="block text-sm font-medium text-gray-700 mb-1">Nama</label>
-                <input type="text" id="nama" name="nama" required class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                <label for="nama" class="block text-sm md:text-base font-semibold text-gray-700 mb-1">Nama</label>
+                <input type="text" id="nama" name="nama" placeholder="Masukkan nama Anda" class="w-full px-4 py-3 rounded-lg bg-gray-50 border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200" required>
             </div>
+            
             <div>
-                <label for="namaMerchant" class="block text-sm font-medium text-gray-700 mb-1">Nama Merchant</label>
-                <input type="text" id="namaMerchant" name="namaMerchant" required class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                <label for="namaMerchant" class="block text-sm md:text-base font-semibold text-gray-700 mb-1">Nama Merchant</label>
+                <input type="text" id="namaMerchant" name="namaMerchant" placeholder="Masukkan nama merchant" class="w-full px-4 py-3 rounded-lg bg-gray-50 border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200" required>
             </div>
+            
             <div>
-                <label for="serialNumber" class="block text-sm font-medium text-gray-700 mb-1">Serial Number</label>
-                <input type="text" id="serialNumber" name="serialNumber" required class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                <label for="serialNumber" class="block text-sm md:text-base font-semibold text-gray-700 mb-1">Serial Number</label>
+                <input type="text" id="serialNumber" name="serialNumber" placeholder="Masukkan Serial Number" class="w-full px-4 py-3 rounded-lg bg-gray-50 border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200" required>
             </div>
+            
             <div>
-                <label for="keterangan" class="block text-sm font-medium text-gray-700 mb-1">Keterangan</label>
-                <textarea id="keterangan" name="keterangan" rows="3" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                <label for="keterangan" class="block text-sm md:text-base font-semibold text-gray-700 mb-1">Keterangan</label>
+                <textarea id="keterangan" name="keterangan" rows="4" placeholder="Tambahkan keterangan (opsional)" class="w-full px-4 py-3 rounded-lg bg-gray-50 border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200 resize-none"></textarea>
             </div>
-            <button type="submit" id="submitBtn" class="w-full py-3 px-4 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                Kirim Data
+            
+            <button id="submitBtn" type="submit" class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold py-3 px-4 rounded-lg button-shadow hover:from-blue-600 hover:to-indigo-700 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 flex items-center justify-center">
+                <span id="buttonText">Kirim Data</span>
+                <div id="loader" class="loader ml-3 hidden"></div>
             </button>
         </form>
-        <div id="status" class="mt-4 text-center text-sm font-medium"></div>
+        
+        <div id="messageBox" class="mt-6 p-4 rounded-lg text-center font-medium hidden"></div>
     </div>
 
     <!-- Modal Konfirmasi -->
-    <div id="confirmation-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full">
-            <h2 class="text-lg font-bold text-gray-800 mb-4">Konfirmasi</h2>
-            <p class="text-gray-600 mb-6">Apakah pengisian data sudah benar?</p>
-            <div class="flex justify-end space-x-4">
-                <button id="modal-cancel-btn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                    Tidak
-                </button>
-                <button id="modal-confirm-btn" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Ya
-                </button>
+    <div id="confirmationModal" class="modal fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-xl shadow-2xl p-6 m-4 max-w-sm w-full transform transition-transform duration-300 scale-95">
+            <div class="text-center">
+                <h3 class="text-lg md:text-xl font-bold text-gray-900">Apakah data sudah benar?</h3>
+                <p class="mt-2 text-sm text-gray-500">Pastikan semua informasi sudah terisi dengan benar.</p>
+            </div>
+            <div class="mt-6 flex flex-col sm:flex-row-reverse justify-center gap-4">
+                <button id="confirmYes" type="button" class="w-full sm:w-auto px-6 py-2 rounded-lg text-white font-bold bg-green-600 hover:bg-green-700 transition duration-300">Ya, Kirim</button>
+                <button id="confirmNo" type="button" class="w-full sm:w-auto px-6 py-2 rounded-lg text-gray-700 font-bold bg-gray-200 hover:bg-gray-300 transition duration-300">Tidak, Kembali</button>
             </div>
         </div>
     </div>
 
     <script>
-        // URL di bawah ini harus Anda ganti dengan URL Web App Google Apps Script Anda.
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwN2gPQUPqdqOKNIvLWWc_O1zb-WBO8sHM1vKHZUJXDu2R7ckTyadsyoir9qG0LK2s_Jw/exec';
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('dataForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const buttonText = document.getElementById('buttonText');
+            const loader = document.getElementById('loader');
+            const messageBox = document.getElementById('messageBox');
+            const modal = document.getElementById('confirmationModal');
+            const confirmYes = document.getElementById('confirmYes');
+            const confirmNo = document.getElementById('confirmNo');
+            
+            // Perbarui URL dengan yang sudah Anda berikan
+            const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyawQ8QzqnVCCz2GvpkpZ-ez9FoQgY61CJJ-EbaHpyvy4tnD-EWVcbpoxxxmrhuhkWHUA/exec';
 
-        const form = document.getElementById('dataForm');
-        const statusDiv = document.getElementById('status');
-        const submitBtn = document.getElementById('submitBtn');
-        const modal = document.getElementById('confirmation-modal');
-        const modalConfirmBtn = document.getElementById('modal-confirm-btn');
-        const modalCancelBtn = document.getElementById('modal-cancel-btn');
+            // Daftar nama yang valid
+            const validNames = ['Aditya Septian', 'Havid Yusuf', 'Sarlian Fajri', 'Erhamna', 'Gogot Iwan Susilo', 'Ahmad Agus Baidowi', 'Kevin Rizki Dwi P', 'Bagus Apriyansyah', 'Muhammad Fatik', 'Fernanda Putra Herlista'];
+            
+            function showMessage(message, type = 'error') {
+                messageBox.textContent = message;
+                messageBox.classList.remove('hidden');
+                if (type === 'success') {
+                    messageBox.className = 'mt-6 p-4 rounded-lg text-center font-medium bg-green-100 text-green-700';
+                } else {
+                    messageBox.className = 'mt-6 p-4 rounded-lg text-center font-medium bg-red-100 text-red-700';
+                }
+            }
 
-        // DAFTAR NAMA YANG DIIZINKAN (diperbarui sesuai permintaan)
-        const validNames = [
-            'Aditya Septian',
-            'Havid Yusuf',
-            'Sarlian Fajri',
-            'Erhamna',
-            'Gogot Iwan Susilo',
-            'Ahmad Agus Baidowi',
-            'Kevin Rizki Dwi P',
-            'Bagus Apriyansyah',
-            'Muhammad Fatik',
-            'Fernanda Putra Herlista'
-        ];
+            function resetForm() {
+                form.reset();
+                messageBox.classList.add('hidden');
+            }
 
-        // Fungsi untuk mengirim data ke Google Apps Script
-        async function sendData() {
-            // Tampilkan pesan loading
-            statusDiv.textContent = 'Mengirim data...';
-            statusDiv.className = 'mt-4 text-center text-sm font-medium text-blue-600';
-            submitBtn.disabled = true;
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const namaInput = document.getElementById('nama').value.trim();
 
-            const formData = {
-                nama: document.getElementById('nama').value,
-                namaMerchant: document.getElementById('namaMerchant').value,
-                serialNumber: document.getElementById('serialNumber').value,
-                keterangan: document.getElementById('keterangan').value
-            };
+                if (!validNames.includes(namaInput)) {
+                    showMessage('Nama yang diinput tidak ada dalam daftar. Mohon periksa kembali.');
+                    return;
+                }
 
-            try {
-                const response = await fetch(WEB_APP_URL, {
+                modal.classList.remove('hidden');
+            });
+
+            confirmYes.addEventListener('click', function() {
+                modal.classList.add('hidden');
+                
+                buttonText.classList.add('hidden');
+                loader.classList.remove('hidden');
+                submitBtn.disabled = true;
+
+                const formData = new FormData(form);
+                const payload = {};
+                for (let [key, value] of formData.entries()) {
+                    payload[key] = value.trim();
+                }
+
+                fetch(WEB_APP_URL, {
                     method: 'POST',
+                    body: JSON.stringify(payload),
                     headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
-                    mode: 'no-cors'
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.result === 'success') {
+                        showMessage('Data berhasil dikirim!', 'success');
+                        resetForm();
+                    } else {
+                        throw new Error(data.message || 'Terjadi kesalahan saat mengirim data.');
+                    }
+                })
+                .catch(error => {
+                    showMessage('Gagal mengirim data. Error: ' + error.message);
+                    console.error('Fetch Error:', error);
+                })
+                .finally(() => {
+                    buttonText.classList.remove('hidden');
+                    loader.classList.add('hidden');
+                    submitBtn.disabled = false;
                 });
+            });
 
-                statusDiv.textContent = '✅ Data berhasil dikirim!';
-                statusDiv.className = 'mt-4 text-center text-sm font-medium text-green-600';
-                form.reset(); // Kosongkan formulir setelah sukses
-
-            } catch (error) {
-                console.error('Error:', error);
-                statusDiv.textContent = '❌ Terjadi kesalahan saat mengirim data. Coba lagi.';
-                statusDiv.className = 'mt-4 text-center text-sm font-medium text-red-600';
-            } finally {
-                submitBtn.disabled = false;
-            }
-        }
-
-        // Tampilkan modal saat tombol submit ditekan
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            const namaInput = document.getElementById('nama').value;
-            const isNameValid = validNames.map(name => name.toLowerCase()).includes(namaInput.toLowerCase());
-
-            if (!isNameValid) {
-                statusDiv.textContent = '❌ Nama tidak valid. Harap masukkan nama yang terdaftar.';
-                statusDiv.className = 'mt-4 text-center text-sm font-medium text-red-600';
-                return;
-            }
-
-            modal.classList.remove('hidden');
-        });
-
-        // Kirim data saat tombol 'Ya' di modal ditekan
-        modalConfirmBtn.addEventListener('click', () => {
-            modal.classList.add('hidden');
-            sendData();
-        });
-
-        // Batalkan dan kosongkan formulir saat tombol 'Tidak' di modal ditekan
-        modalCancelBtn.addEventListener('click', () => {
-            modal.classList.add('hidden');
-            form.reset();
-        });
-    </script>
-</body>
-</html>                Kirim Data
-            </button>
-        </form>
-        <div id="status" class="mt-4 text-center text-sm font-medium"></div>
-    </div>
-
-    <!-- Modal Konfirmasi -->
-    <div id="confirmation-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full">
-            <h2 class="text-lg font-bold text-gray-800 mb-4">Konfirmasi</h2>
-            <p class="text-gray-600 mb-6">Apakah pengisian data sudah benar?</p>
-            <div class="flex justify-end space-x-4">
-                <button id="modal-cancel-btn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                    Tidak
-                </button>
-                <button id="modal-confirm-btn" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Ya
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // URL di bawah ini harus Anda ganti dengan URL Web App Google Apps Script Anda.
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwN2gPQUPqdqOKNIvLWWc_O1zb-WBO8sHM1vKHZUJXDu2R7ckTyadsyoir9qG0LK2s_Jw/exec';
-
-        const form = document.getElementById('dataForm');
-        const statusDiv = document.getElementById('status');
-        const submitBtn = document.getElementById('submitBtn');
-        const modal = document.getElementById('confirmation-modal');
-        const modalConfirmBtn = document.getElementById('modal-confirm-btn');
-        const modalCancelBtn = document.getElementById('modal-cancel-btn');
-
-        // DAFTAR NAMA YANG DIIZINKAN (Anda bisa mengubah daftar ini)
-        const validNames = ['Salwa', 'Budi', 'Siti', 'Joko', 'Ani', 'Fadli', 'Rizky', 'Dina', 'Aulia', 'Wahyu'];
-
-        // Fungsi untuk mengirim data ke Google Apps Script
-        async function sendData() {
-            // Tampilkan pesan loading
-            statusDiv.textContent = 'Mengirim data...';
-            statusDiv.className = 'mt-4 text-center text-sm font-medium text-blue-600';
-            submitBtn.disabled = true;
-
-            const formData = {
-                nama: document.getElementById('nama').value,
-                namaMerchant: document.getElementById('namaMerchant').value,
-                serialNumber: document.getElementById('serialNumber').value,
-                keterangan: document.getElementById('keterangan').value
-            };
-
-            try {
-                const response = await fetch(WEB_APP_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
-                    mode: 'no-cors'
-                });
-
-                statusDiv.textContent = '✅ Data berhasil dikirim!';
-                statusDiv.className = 'mt-4 text-center text-sm font-medium text-green-600';
-                form.reset(); // Kosongkan formulir setelah sukses
-
-            } catch (error) {
-                console.error('Error:', error);
-                statusDiv.textContent = '❌ Terjadi kesalahan saat mengirim data. Coba lagi.';
-                statusDiv.className = 'mt-4 text-center text-sm font-medium text-red-600';
-            } finally {
-                submitBtn.disabled = false;
-            }
-        }
-
-        // Tampilkan modal saat tombol submit ditekan
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            const namaInput = document.getElementById('nama').value;
-            const isNameValid = validNames.map(name => name.toLowerCase()).includes(namaInput.toLowerCase());
-
-            if (!isNameValid) {
-                statusDiv.textContent = '❌ Nama tidak valid. Harap masukkan nama yang terdaftar.';
-                statusDiv.className = 'mt-4 text-center text-sm font-medium text-red-600';
-                return;
-            }
-
-            modal.classList.remove('hidden');
-        });
-
-        // Kirim data saat tombol 'Ya' di modal ditekan
-        modalConfirmBtn.addEventListener('click', () => {
-            modal.classList.add('hidden');
-            sendData();
-        });
-
-        // Batalkan dan kosongkan formulir saat tombol 'Tidak' di modal ditekan
-        modalCancelBtn.addEventListener('click', () => {
-            modal.classList.add('hidden');
-            form.reset();
-        });
-    </script>
-</body>
-</html>                Kirim Data
-            </button>
-        </form>
-        <div id="status" class="mt-4 text-center text-sm font-medium"></div>
-    </div>
-
-    <!-- Modal Konfirmasi -->
-    <div id="confirmation-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full">
-            <h2 class="text-lg font-bold text-gray-800 mb-4">Konfirmasi</h2>
-            <p class="text-gray-600 mb-6">Apakah pengisian data sudah benar?</p>
-            <div class="flex justify-end space-x-4">
-                <button id="modal-cancel-btn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                    Tidak
-                </button>
-                <button id="modal-confirm-btn" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Ya
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // URL di bawah ini harus Anda ganti dengan URL Web App Google Apps Script Anda.
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwN2gPQUPqdqOKNIvLWWc_O1zb-WBO8sHM1vKHZUJXDu2R7ckTyadsyoir9qG0LK2s_Jw/exec';
-
-        const form = document.getElementById('dataForm');
-        const statusDiv = document.getElementById('status');
-        const submitBtn = document.getElementById('submitBtn');
-        const modal = document.getElementById('confirmation-modal');
-        const modalConfirmBtn = document.getElementById('modal-confirm-btn');
-        const modalCancelBtn = document.getElementById('modal-cancel-btn');
-
-        // Fungsi untuk mengirim data ke Google Apps Script
-        async function sendData() {
-            // Tampilkan pesan loading
-            statusDiv.textContent = 'Mengirim data...';
-            statusDiv.className = 'mt-4 text-center text-sm font-medium text-blue-600';
-            submitBtn.disabled = true;
-
-            const formData = {
-                nama: document.getElementById('nama').value,
-                namaMerchant: document.getElementById('namaMerchant').value,
-                serialNumber: document.getElementById('serialNumber').value,
-                keterangan: document.getElementById('keterangan').value
-            };
-
-            try {
-                const response = await fetch(WEB_APP_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
-                    mode: 'no-cors'
-                });
-
-                statusDiv.textContent = '✅ Data berhasil dikirim!';
-                statusDiv.className = 'mt-4 text-center text-sm font-medium text-green-600';
-                form.reset(); // Kosongkan formulir setelah sukses
-
-            } catch (error) {
-                console.error('Error:', error);
-                statusDiv.textContent = '❌ Terjadi kesalahan saat mengirim data. Coba lagi.';
-                statusDiv.className = 'mt-4 text-center text-sm font-medium text-red-600';
-            } finally {
-                submitBtn.disabled = false;
-            }
-        }
-
-        // Tampilkan modal saat tombol submit ditekan
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            modal.classList.remove('hidden');
-        });
-
-        // Kirim data saat tombol 'Ya' di modal ditekan
-        modalConfirmBtn.addEventListener('click', () => {
-            modal.classList.add('hidden');
-            sendData();
-        });
-
-        // Batalkan dan kosongkan formulir saat tombol 'Tidak' di modal ditekan
-        modalCancelBtn.addEventListener('click', () => {
-            modal.classList.add('hidden');
-            form.reset();
+            confirmNo.addEventListener('click', function() {
+                modal.classList.add('hidden');
+                resetForm();
+            });
         });
     </script>
 </body>
