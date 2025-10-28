@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAE Data Entry</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <main>
+        <h1>SAE Data Entry Form</h1>
+        
+        <div id="scanner-container">
+            <div id="reader"></div>
+            <button id="close-scanner" class="btn btn-danger">Close Scanner</button>
+        </div>
+
+        <form id="sae-form">
+            
+            <label for="saeName">SAE Name</label>
+            <select id="saeName" name="saeName" required>
+                <option value="" disabled selected>-- Select SAE --</option>
+                <option value="Aditya Septian">Aditya Septian</option>
+                <option value="Ahmad Agus Baidowi Rs">Ahmad Agus Baidowi Rs</option>
+                <option value="Bagus Irfansyah">Bagus Irfansyah</option>
+                <option value="Erhamna">Erhamna</option>
+                <option value="Fernanda Putra Herlista">Fernanda Putra Herlista</option>
+                <option value="Kevin Rizki Dwi Putra">Kevin Rizki Dwi Putra</option>
+                <option value="Muhammad Fatikh">Muhammad Fatikh</option>
+                <option value="Sarlian Fajrin">Sarlian Fajrin</option>
+            </select>
+            
+            <label for="merchantName">Merchant Name</label>
+            <input type="text" id="merchantName" name="merchantName" required>
+            
+            <label for="serialNumber">Serial Number</label>
+            <div class="input-group">
+                <input type="text" id="serialNumber" name="serialNumber" required>
+                <button type="button" id="scan-btn" class="btn">Scan Barcode</button>
+            </div>
+            
+            <label for="completeness">Completeness (e.g., "Box, Charger, SIM")</label>
+            <textarea id="completeness" name="completeness" rows="3" required></textarea>
+            
+            <button type="submit" id="submit-btn" class="btn btn-primary">
+                Submit
+                <div class="spinner" id="spinner"></div>
+            </button>
+            
+        </form>
+    </main>
+
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+    <script>
+        // !! IMPORTANT !!
+        // Paste your Google Apps Script Web App URL here
+        const SCRIPT_URL = "PASTE_YOUR_WEB_APP_URL_HERE"; 
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
