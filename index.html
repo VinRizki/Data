@@ -3,40 +3,29 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>SAE Entry to Excel</title>
+<title>SAE Input Form</title>
 <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
 <style>
   body { font-family: Arial, sans-serif; max-width: 900px; margin: 2em auto; padding: 1em; background: #f0f3fa; }
   h1 { text-align: center; }
-  form {
-    background: white; padding: 1.5em 2em; border-radius: 8px; box-shadow: 0 0 12px #ccc; margin-bottom: 2em;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 1.2em 3em;
-  }
-  label { font-weight: 600; margin-bottom: 0.3em; display: block; }
-  input, select { width: 100%; padding: 0.5em 0.8em; border: 1px solid #ccc; border-radius: 5px; font-size: 1em; }
-  button { cursor: pointer; background: #5a67d8; color: white; font-weight: 700; border: none; border-radius: 6px; padding: 0.7em 1.3em; }
-  button:disabled { background: #999; cursor: not-allowed;}
-  #scanner-container { display: none; margin-top: 1em; border: 1px solid #aaa; border-radius: 8px; padding: 0.5em; grid-column: span 2; }
-  #interactive { width: 100%; height: 260px; }
-  table {
-    width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden;
-  }
-  th, td {
-    padding: 0.4em 0.8em; border: 1px solid #ddd; text-align: center; font-size: 0.9em;
-  }
-  th { background: #e2e8f0;}
-  #exportBtn { margin-top: 1em; float: right; background: #4c51bf; }
-  .full-width { grid-column: span 2; }
+  form, table { background: white; padding: 1.5em 2em; border-radius: 8px; box-shadow: 0 0 12px #ccc; margin-bottom: 2em; }
+  form { display: grid; grid-template-columns: 1fr 1fr; gap: 1em 2em; }
+  label { font-weight: 600; margin-bottom: 0.4em; display: block; }
+  select, input { width: 100%; padding: 0.5em 0.8em; border-radius: 6px; border: 1px solid #aaa; font-size: 1em; }
+  button { grid-column: span 2; padding: 0.9em; background: #5a67d8; color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; }
+  #scanner-container { display: none; grid-column: span 2; margin-top: 1em; border: 1px solid #aaa; border-radius: 8px; }
+  #interactive { width: 100%; height: 250px; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { border: 1px solid #ddd; padding: 0.5em; text-align: center; font-size: 0.9em; }
+  th { background-color: #e2e8f0; }
+  #exportBtn { float: right; margin-top: -2em; margin-bottom: 2em; padding: 0.5em 1em; background: #4c51bf; color: white; border: none; border-radius: 5px; cursor: pointer; }
 </style>
 </head>
 <body>
 
-<h1>SAE Entry to Excel</h1>
-<p style="text-align:center; max-width:600px; margin-bottom: 2em;">
-  Isi data berikut. Pilih nama SAE dari list, kemudian scan barcode untuk isi serial number (atau isi manual).
-</p>
+<h1>SAE Input Form</h1>
 
-<form id="entryForm">
+<form id="formInput">
   <div>
     <label for="dateInput">Tanggal</label>
     <input type="date" id="dateInput" required />
@@ -46,14 +35,14 @@
     <label for="saeNameSelect">Nama SAE</label>
     <select id="saeNameSelect" required>
       <option value="" disabled selected>Pilih SAE Name</option>
-      <option value="Aditya Septian">Aditya Septian</option>
-      <option value="Ahmad Agus Baidowi Rs">Ahmad Agus Baidowi Rs</option>
-      <option value="Bagus Irfansyah">Bagus Irfansyah</option>
-      <option value="Erhamna">Erhamna</option>
-      <option value="Fernanda Putra Herlista">Fernanda Putra Herlista</option>
-      <option value="Kevin Rizki Dwi Putra">Kevin Rizki Dwi Putra</option>
-      <option value="Muhammad Fatikh">Muhammad Fatikh</option>
-      <option value="Sarlian Fajrin">Sarlian Fajrin</option>
+      <option>Aditya Septian</option>
+      <option>Ahmad Agus Baidowi Rs</option>
+      <option>Bagus Irfansyah</option>
+      <option>Erhamna</option>
+      <option>Fernanda Putra Herlista</option>
+      <option>Kevin Rizki Dwi Putra</option>
+      <option>Muhammad Fatikh</option>
+      <option>Sarlian Fajrin</option>
     </select>
   </div>
 
@@ -65,12 +54,12 @@
   <div>
     <label for="serialInput">Serial Number</label>
     <input type="text" id="serialInput" placeholder="Serial Number" required />
-    <button type="button" id="btnScanBarcode" style="margin-top:0.4em; width: 100%;">Scan Barcode</button>
+    <button type="button" id="btnScanBarcode" style="margin-top: 0.4em;">Scan Barcode</button>
   </div>
 
-  <div id="scanner-container" class="full-width">
+  <div id="scanner-container">
     <div id="interactive"></div>
-    <button type="button" id="btnStopScan" style="margin-top:0.4em; width: 100%; background:#e53e3e;">Stop Scan</button>
+    <button type="button" id="btnStopScan" style="width: 100%; background: #e53e3e; color: white; border: none; padding: 0.6em; border-radius: 6px;">Stop Scanning</button>
   </div>
 
   <div>
@@ -85,24 +74,22 @@
     <label for="competencySelect">Competency</label>
     <select id="competencySelect" required>
       <option value="" disabled selected>Pilih Competency</option>
-      <option value="Withdrawal">Withdrawal</option>
-      <option value="Replacement">Replacement</option>
-      <option value="HO">HO</option>
+      <option>Withdrawal</option>
+      <option>Replacement</option>
+      <option>HO</option>
     </select>
   </div>
 
-  <div class="full-width" style="text-align:right; margin-top:1em;">
-    <button type="reset" style="background:#a0aec0; margin-right: 1em;">Reset</button>
-    <button type="submit">Submit</button>
-  </div>
+  <button type="submit">Submit</button>
 </form>
 
-<h2>Entries</h2>
+<button id="exportBtn">Export ke Excel (CSV)</button>
+
 <table id="entriesTable">
   <thead>
     <tr>
       <th>Tanggal</th>
-      <th>Nama SAE</th>
+      <th>SAE Name</th>
       <th>Merchant</th>
       <th>Serial Number</th>
       <th>Completeness</th>
@@ -111,28 +98,29 @@
   </thead>
   <tbody></tbody>
 </table>
-<button id="exportBtn">Export to Excel</button>
 
+<script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
 <script>
+  const SPREADSHEET_ID = "1ugQb4jor_IWdQolMutPzB4g0pniAhzJjfAEB5J3_DjM"; // Ganti dengan spreadsheet id Anda yang benar
+  const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbz_3nYmRwj4kCrTWZh4D6oiRyxG0RKpx3JwCu3Ivlh89GuOw9BpP_XBqdAPsIW4l3oFGQ/exec";
+
   const dateInput = document.getElementById('dateInput');
   const saeNameSelect = document.getElementById('saeNameSelect');
   const merchantInput = document.getElementById('merchantInput');
   const serialInput = document.getElementById('serialInput');
   const completenessSelect = document.getElementById('completenessSelect');
   const competencySelect = document.getElementById('competencySelect');
-  const entryForm = document.getElementById('entryForm');
+  const formInput = document.getElementById('formInput');
   const entriesTableBody = document.querySelector('#entriesTable tbody');
   const exportBtn = document.getElementById('exportBtn');
-
-  const scanBtn = document.getElementById('btnScanBarcode');
-  const stopScanBtn = document.getElementById('btnStopScan');
+  const btnScanBarcode = document.getElementById('btnScanBarcode');
+  const btnStopScan = document.getElementById('btnStopScan');
   const scannerContainer = document.getElementById('scanner-container');
 
-  let entries = [];
   let scanning = false;
+  let entries = [];
 
-  // Set default date to today
-  function setDefaultDate() {
+  function setToday() {
     const today = new Date();
     const yyyy = today.getFullYear();
     let mm = today.getMonth() + 1;
@@ -141,120 +129,133 @@
     if (dd < 10) dd = '0' + dd;
     dateInput.value = `${yyyy}-${mm}-${dd}`;
   }
-  setDefaultDate();
+  setToday();
 
-  // Refresh entries display
-  function refreshEntriesTable() {
+  function refreshTable() {
     entriesTableBody.innerHTML = '';
-    entries.forEach(e => {
+    entries.forEach(row => {
       const tr = document.createElement('tr');
-      [e.date, e.saeName, e.merchant, e.serial, e.completeness, e.competency].forEach(val => {
+      [row.date, row.saeName, row.merchant, row.serial, row.completeness, row.competency].forEach(text => {
         const td = document.createElement('td');
-        td.textContent = val;
+        td.textContent = text;
         tr.appendChild(td);
       });
       entriesTableBody.appendChild(tr);
     });
   }
 
-  // Export entries to CSV file (Excel compatible)
-  exportBtn.addEventListener('click', () => {
-    if(entries.length === 0) {
-      alert('Tidak ada entri untuk diexport.');
-      return;
+  // Fungsi ambil data dari Sheet untuk SAE yang dipilih
+  async function fetchEntries(saeName) {
+    try {
+      const res = await fetch(`${WEBAPP_URL}?saeName=${encodeURIComponent(saeName)}`);
+      const json = await res.json();
+      if (json.success) {
+        entries = json.data.map(d => ({
+          date: d.date,
+          saeName: d.saeNameFull,
+          merchant: d.merchantName,
+          serial: d.serialNumber,
+          completeness: d.completeness,
+          competency: d.competency
+        }));
+        refreshTable();
+      } else {
+        alert('Gagal mengambil data: ' + json.message);
+      }
+    } catch (err) {
+      alert('Error mengambil data: ' + err.message);
     }
-    const headers = ['Tanggal', 'Nama SAE', 'Merchant', 'Serial Number', 'Completeness', 'Competency'];
-    let csv = headers.join(',') + '\n';
-    entries.forEach(e => {
-      const row = [e.date,e.saeName,e.merchant,e.serial,e.completeness,e.competency]
-        .map(v => `"${v.replace(/"/g, '""')}"`).join(',');
-      csv += row + '\n';
-    });
-    const blob = new Blob([csv], {type: 'text/csv'});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'SAE_Entries.csv';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+  }
+
+  saeNameSelect.addEventListener('change', () => {
+    const saeName = saeNameSelect.value;
+    if (saeName) fetchEntries(saeName);
+    else {
+      entries = [];
+      refreshTable();
+    }
   });
 
-  // Handle form submission
-  entryForm.addEventListener('submit', async e => {
+  formInput.addEventListener('submit', async e => {
     e.preventDefault();
 
-    const dateVal = dateInput.value;
-    const saeNameVal = saeNameSelect.value;
-    const merchantVal = merchantInput.value.trim();
-    const serialVal = serialInput.value.trim();
-    const completenessVal = completenessSelect.value;
-    const competencyVal = competencySelect.value;
+    if (!confirm('Apakah Anda yakin ingin mengirim data ini?')) return;
 
-    if(!saeNameVal) {
-      alert('Silakan pilih SAE Name.');
-      return;
-    }
-    if(!competencyVal) {
-      alert('Silakan pilih Competency.');
-      return;
-    }
-    if(!merchantVal || !serialVal) {
-      alert('Mohon lengkapi Merchant dan Serial Number.');
-      return;
-    }
-
-    if(!confirm('Apakah Anda yakin ingin mengirim data ini?')) return;
-
-    // Tambahkan ke lokal & tampilkan tabel
-    entries.push({
-      date: dateVal,
-      saeName: saeNameVal,
-      merchant: merchantVal,
-      serial: serialVal,
-      completeness: completenessVal,
-      competency: competencyVal
-    });
-    refreshEntriesTable();
-
-    // Kirim data ke Google Sheets via Google Apps Script
-    // Ganti URL berikut dengan URL Web App Google Apps Script Anda
-    const endpoint = 'https://script.google.com/macros/s/AKfycbzLepgRtF0ROQ7TSLF2Zui5IfxumWpAWCMTHV-oBBflNOXlt0og65ISokNMM_KeQNqySQ/exec';
+    const dataToSend = {
+      date: dateInput.value,
+      saeNameFull: saeNameSelect.value,
+      merchantName: merchantInput.value.trim(),
+      serialNumber: serialInput.value.trim(),
+      completeness: completenessSelect.value,
+      competency: competencySelect.value
+    };
 
     try {
-      const response = await fetch(endpoint, {
+      const res = await fetch(WEBAPP_URL, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          date: dateVal,
-          saeNameFull: saeNameVal,
-          merchantName: merchantVal,
-          serialNumber: serialVal,
-          completeness: completenessVal,
-          competency: competencyVal
-        })
+        body: JSON.stringify(dataToSend)
       });
-      const json = await response.json();
-      if(!json.success) {
-        alert('Gagal mengirim ke Google Sheets: ' + (json.message || 'Error tidak diketahui'));
+      const json = await res.json();
+      if (json.success) {
+        alert('Data berhasil dikirim!');
+        // Refresh data setelah submit
+        fetchEntries(dataToSend.saeNameFull);
+        // Reset form (tetap pakai tanggal hari ini)
+        formInput.reset();
+        setToday();
+      } else {
+        alert('Gagal mengirim data: ' + json.message);
       }
-    } catch(err) {
+    } catch (err) {
       alert('Error saat mengirim data: ' + err.message);
     }
-
-    entryForm.reset();
-    setDefaultDate();
   });
 
-  // Barcode scanning logic using QuaggaJS
-  scanBtn.addEventListener('click', () => {
-    if(scanning) return;
+  exportBtn.addEventListener('click', () => {
+    if (entries.length === 0) {
+      alert('Tidak ada data untuk diexport.');
+      return;
+    }
+    const header = ['Tanggal', 'Nama SAE', 'Merchant', 'Serial Number', 'Completeness', 'Competency'];
+    let csvContent = header.join(',') + '\n';
+    entries.forEach(row => {
+      const line = [
+        row.date,
+        `"${row.saeName.replace(/"/g, '""')}"`,
+        `"${row.merchant.replace(/"/g, '""')}"`,
+        `"${row.serial.replace(/"/g, '""')}"`,
+        row.completeness,
+        row.competency
+      ].join(',');
+      csvContent += line + '\n';
+    });
+    const blob = new Blob([csvContent], {type: 'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'SAE_Entries.csv';
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  });
+
+  // Barcode Scanner logic dengan QuaggaJS
+  btnScanBarcode.addEventListener('click', () => {
+    if (scanning) return;
     scannerContainer.style.display = 'block';
     Quagga.init({
-      inputStream: { type: 'LiveStream', target: document.querySelector('#interactive'), constraints: {facingMode: 'environment'} },
-      decoder: { readers: ['code_128_reader','ean_reader','upc_reader','upc_e_reader'] }
+      inputStream: {
+        name: 'Live',
+        type: 'LiveStream',
+        target: document.querySelector('#interactive'),
+        constraints: {facingMode: 'environment'}
+      },
+      decoder: { readers: ['code_128_reader', 'ean_reader', 'upc_reader', 'upc_e_reader'] }
     }, err => {
-      if(err){
-        alert('Error membuka kamera: '+ err);
+      if (err) {
+        alert('Error akses kamera: ' + err);
         scannerContainer.style.display = 'none';
         scanning = false;
         return;
@@ -262,20 +263,19 @@
       Quagga.start();
       scanning = true;
     });
+
     Quagga.onDetected(result => {
-      if(result && result.codeResult && result.codeResult.code){
+      if (result && result.codeResult && result.codeResult.code) {
         serialInput.value = result.codeResult.code;
         stopScan();
       }
     });
   });
 
-  stopScanBtn.addEventListener('click', () => {
-    stopScan();
-  });
+  btnStopScan.addEventListener('click', () => stopScan());
 
-  function stopScan(){
-    if(scanning){
+  function stopScan() {
+    if (scanning) {
       Quagga.stop();
       scanning = false;
       scannerContainer.style.display = 'none';
