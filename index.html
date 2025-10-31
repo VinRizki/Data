@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Form Input SAE</title>
+<title>Form Input SAE Terhubung Google Apps Script</title>
 <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
 <style>
   body { max-width: 900px; margin: 2em auto; font-family: Arial, sans-serif; background: #f7f9fc; padding: 1em; }
   h1 { text-align: center; margin-bottom: 1em; }
-  form { background: white; padding: 1.5em; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: grid; grid-template-columns: 1fr 1fr; gap: 1.2em; }
+  form { background: white; padding: 1.5em 2em; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: grid; grid-template-columns: 1fr 1fr; gap: 1.2em; }
   label { font-weight: 600; margin-bottom: 0.3em; display: block; }
   input, select, button { width: 100%; padding: 8px; font-size: 1em; border-radius: 6px; border: 1px solid #ccc; }
   button { background-color: #3f51b5; color: white; font-weight: bold; border: none; cursor: pointer; grid-column: span 2; }
@@ -101,9 +101,9 @@
 
 <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
 <script>
-  const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzRhh3vsNHMwc1QxAmly8JcZIJlGCxIPm0SKDK2FE9yhraVXo_OtA71Y1Fmev3dwWg0Xg/exec";  // Ganti URL Google Apps Script Web App Anda
+  // Ganti dengan URL Web App Google Apps Script Anda
+  const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzRhh3vsNHMwc1QxAmly8JcZIJlGCxIPm0SKDK2FE9yhraVXo_OtA71Y1Fmev3dwWg0Xg/exec";
 
-  // Elemen
   const dateInput = document.getElementById('dateInput');
   const saeNameSelect = document.getElementById('saeNameSelect');
   const merchantInput = document.getElementById('merchantInput');
@@ -120,19 +120,27 @@
   let scanning = false;
   let entries = [];
 
-  // Set default date ke hari ini
+  // Set tanggal hari ini
   function setTodayDate() {
     const now = new Date();
     const yyyy = now.getFullYear();
     let mm = now.getMonth() + 1;
     let dd = now.getDate();
-    mm = mm < 10 ? '0'+mm : mm;
-    dd = dd < 10 ? '0'+dd : dd;
+    mm = mm < 10 ? '0' + mm : mm;
+    dd = dd < 10 ? '0' + dd : dd;
     dateInput.value = `${yyyy}-${mm}-${dd}`;
   }
   setTodayDate();
 
-  // Load data untuk SAE terpilih
+  // Muat data SAE saat pilih SAE berubah atau awal load halaman
+  saeNameSelect.addEventListener('change', () => {
+    loadEntries(saeNameSelect.value);
+  });
+
+  window.onload = () => {
+    if (saeNameSelect.value) loadEntries(saeNameSelect.value);
+  };
+
   async function loadEntries(saeName) {
     if (!saeName) {
       entries = [];
@@ -143,13 +151,13 @@
       const res = await fetch(`${WEBAPP_URL}?saeName=${encodeURIComponent(saeName)}`);
       const json = await res.json();
       if (json.success) {
-        entries = json.data.map(row => ({
-          date: row.date,
-          saeName: row.saeNameFull,
-          merchant: row.merchantName,
-          serial: row.serialNumber,
-          completeness: row.completeness,
-          competency: row.competency
+        entries = json.data.map(x => ({
+          date: x.date,
+          saeName: x.saeNameFull,
+          merchant: x.merchantName,
+          serial: x.serialNumber,
+          completeness: x.completeness,
+          competency: x.competency
         }));
         renderTable();
       } else {
@@ -160,16 +168,12 @@
     }
   }
 
-  saeNameSelect.addEventListener('change', () => {
-    loadEntries(saeNameSelect.value);
-  });
-
   function renderTable() {
-    entriesTableBody.innerHTML = '';
+    entriesTableBody.innerHTML = "";
     entries.forEach(row => {
       const tr = document.createElement('tr');
       [row.date, row.saeName, row.merchant, row.serial, row.completeness, row.competency].forEach(text => {
-        const td = document.createElement('td');
+        let td = document.createElement('td');
         td.textContent = text;
         tr.appendChild(td);
       });
@@ -177,10 +181,11 @@
     });
   }
 
-  formInput.addEventListener('submit', async e => {
+  // Submit form
+  formInput.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    if (!confirm("Apakah Anda yakin ingin mengirim data ini?")) return;
+    if (!confirm('Apakah Anda yakin ingin mengirim data ini?')) return;
 
     const data = {
       date: dateInput.value,
@@ -194,8 +199,8 @@
     try {
       const res = await fetch(WEBAPP_URL, {
         method: 'POST',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify(data),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
       });
       const json = await res.json();
       if (json.success) {
@@ -204,22 +209,25 @@
         formInput.reset();
         setTodayDate();
       } else {
-        alert('Gagal menyimpan: ' + json.message);
+        alert('Gagal menyimpan data: ' + json.message);
       }
     } catch (error) {
-      alert('Terjadi error saat mengirim data: ' + error.message);
+      alert('Error saat mengirim data: ' + error.message);
     }
   });
 
+  // Export CSV
   exportBtn.addEventListener('click', () => {
     if (entries.length === 0) {
-      alert('Tidak ada data untuk diexport.');
+      alert("Tidak ada data untuk diexport.");
       return;
     }
-    const header = ['Tanggal', 'Nama SAE', 'Merchant', 'Nomor Seri', 'Kelengkapan', 'Kompetensi'];
-    let csv = header.join(',') + '\r\n';
+
+    const csvHeader = ['Tanggal', 'Nama SAE', 'Merchant', 'Nomor Seri', 'Kelengkapan', 'Kompetensi'];
+    let csvContent = csvHeader.join(',') + '\r\n';
+
     entries.forEach(row => {
-      const line = [
+      const csvRow = [
         row.date,
         `"${row.saeName.replace(/"/g, '""')}"`,
         `"${row.merchant.replace(/"/g, '""')}"`,
@@ -227,38 +235,38 @@
         row.completeness,
         row.competency
       ].join(',');
-      csv += line + '\r\n';
+      csvContent += csvRow + '\r\n';
     });
-    const blob = new Blob([csv], {type: 'text/csv'});
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
+    a.style.display = "none";
     a.href = url;
-    a.download = 'data_sae.csv';
-    a.style.display = 'none';
+    a.download = "data_sae.csv";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
   });
 
-  // Barcode scanner
+  // Barcode scanner QuaggaJS
   btnScanBarcode.addEventListener('click', () => {
-    if(scanning) return;
+    if (scanning) return;
     scannerContainer.style.display = 'block';
+
     Quagga.init({
       inputStream: {
-        name: 'Live',
-        type: 'LiveStream',
+        name: "Live",
+        type: "LiveStream",
         target: document.querySelector('#interactive'),
-        constraints: {
-          facingMode: 'environment'
-        }
+        constraints: { facingMode: "environment" }
       },
       decoder: {
-        readers: ['code_128_reader', 'ean_reader', 'upc_reader', 'upc_e_reader']
+        readers: ["code_128_reader", "ean_reader", "upc_reader", "upc_e_reader"]
       }
     }, err => {
       if (err) {
-        alert('Gagal mengakses kamera: ' + err);
+        alert("Gagal mengaktifkan kamera: " + err);
         scannerContainer.style.display = 'none';
         scanning = false;
         return;
@@ -266,6 +274,7 @@
       Quagga.start();
       scanning = true;
     });
+
     Quagga.onDetected(result => {
       if (result && result.codeResult && result.codeResult.code) {
         serialInput.value = result.codeResult.code;
@@ -279,16 +288,12 @@
   });
 
   function stopScan() {
-    if(scanning) {
+    if (scanning) {
       Quagga.stop();
       scanning = false;
-      scannerContainer.style.display = 'none';
+      scannerContainer.style.display = "none";
     }
   }
-
-  window.onload = () => {
-    if(saeNameSelect.value) loadEntries(saeNameSelect.value);
-  };
 </script>
 
 </body>
